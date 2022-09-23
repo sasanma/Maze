@@ -46,6 +46,9 @@ class Application(tkinter.Frame):
         #現在、迷路を作成中かどうかを記録する変数
         self.playing = False
         
+        #迷路が作成されているかの変数
+        self.mazeCompleted = False
+        
         #Canvasの作成(枠内に表示)
         self.canvas = tkinter.Canvas(self,bg="#ffffff" , width=CANVAS_WIDTH, height=CANVAS_HEIGHT, highlightthickness=0)     #highlightthicknessはCanvasの囲み線をなくすため
         self.canvas.place(x=0, y=0)
@@ -197,6 +200,7 @@ class Application(tkinter.Frame):
                     break
          
         print("迷路作成完了!")
+        self.mazeCompleted = True
         self.playing = False
         self.extend_btn["state"] = "normal"
         self.MakeStartAndGoal()
@@ -228,6 +232,7 @@ class Application(tkinter.Frame):
         self.Dig(dig_x, dig_y)     
         
         print("迷路作成完了!")
+        self.mazeCompleted = True
         self.playing = False
         self.digging_btn["state"] = "normal"
         self.MakeStartAndGoal()
@@ -342,6 +347,7 @@ class Application(tkinter.Frame):
             time.sleep(SLEEP_TIME)
             
         print("迷路作成完了!")
+        self.mazeCompleted = True
         self.playing = False
         self.topple_btn["state"] = "normal"
         self.MakeStartAndGoal()
@@ -383,7 +389,7 @@ class Application(tkinter.Frame):
                 
     #ダイクストラ法のボタンが押されたときの処理---------------------------------------------------------
     def DijkstraButton_clicked(self):
-        if not self.playing:
+        if not self.playing and self.mazeCompleted:
             self.playing = True
             thread = threading.Thread(target=self.DijkstraMethod)
             thread.start()
@@ -466,7 +472,7 @@ class Application(tkinter.Frame):
         
     #A*アルゴリズムのボタンが押されたときの処理----------------------------------------------------------------
     def AStarButton_clicked(self):
-        if not self.playing:
+        if not self.playing and self.mazeCompleted:
             self.playing = True
             thread = threading.Thread(target=self.AStarMethod)
             thread.start()
